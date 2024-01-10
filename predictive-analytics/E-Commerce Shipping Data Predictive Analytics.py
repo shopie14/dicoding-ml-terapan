@@ -250,6 +250,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.utils import class_weight
+from sklearn.metrics import mean_absolute_error
+
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -279,9 +281,21 @@ y_test_pred_gbc = gbc_model.predict(X_test)
 train_acc = accuracy_score(y_train, y_train_pred_gbc)
 test_acc = accuracy_score(y_test, y_test_pred_gbc)
 
-from sklearn.metrics import classification_report
+# Prediksi probabilitas pada data training dan testing
+y_train_prob_gbc = gbc_model.predict_proba(X_train)[:, 1]
+y_test_prob_gbc = gbc_model.predict_proba(X_test)[:, 1]
 
-print(classification_report(y_test,y_test_pred_gbc))
+# Mengonversi probabilitas menjadi kelas dengan threshold 0.5
+y_train_pred_gbc_mae = (y_train_prob_gbc > 0.5).astype(int)
+y_test_pred_gbc_mae = (y_test_prob_gbc > 0.5).astype(int)
+
+# Menghitung MAE pada data training dan testing
+train_mae = mean_absolute_error(y_train, y_train_pred_gbc_mae)
+test_mae = mean_absolute_error(y_test, y_test_pred_gbc_mae)
+
+# Menampilkan hasil akurasi dan MAE
+print(f'Training Accuracy: {train_acc:.4f}, Training MAE: {train_mae:.4f}')
+print(f'Testing Accuracy: {test_acc:.4f}, Testing MAE: {test_mae:.4f}')
 
 """## Adaptive Boosting (64.7% accuracy):"""
 
@@ -307,7 +321,21 @@ test_acc = accuracy_score(y_test, y_test_pred)
 print('Train accuracy: ', train_acc)
 print('Test accuracy: ', test_acc)
 
-print(classification_report(y_test,y_test_pred))
+# Prediksi probabilitas pada data training dan testing
+y_train_prob_abc = abc.predict_proba(X_train)[:, 1]
+y_test_prob_abc = abc.predict_proba(X_test)[:, 1]
+
+# Mengonversi probabilitas menjadi kelas dengan threshold 0.5
+y_train_pred_abc_mae = (y_train_prob_abc > 0.5).astype(int)
+y_test_pred_abc_mae = (y_test_prob_abc > 0.5).astype(int)
+
+# Menghitung MAE pada data training dan testing
+train_mae_abc = mean_absolute_error(y_train, y_train_pred_abc_mae)
+test_mae_abc = mean_absolute_error(y_test, y_test_pred_abc_mae)
+
+# Menampilkan hasil akurasi dan MAE
+print(f'Training Accuracy (AdaBoost): {train_acc:.4f}, Training MAE: {train_mae_abc:.4f}')
+print(f'Testing Accuracy (AdaBoost): {test_acc:.4f}, Testing MAE: {test_mae_abc:.4f}')
 
 """##  Extreme Gradient Boosting (69.1% accuracy):"""
 
@@ -348,4 +376,14 @@ test_acc = accuracy_score(y_test, y_test_pred_xgb)
 print('Train accuracy: ', train_acc)
 print('Test accuracy: ', test_acc)
 
-print(classification_report(y_test,y_test_pred_xgb))
+# Mengonversi probabilitas menjadi kelas dengan threshold 0.5
+y_train_pred_xgb_mae = (y_train_pred_xgb >= 0.5).astype(int)
+y_test_pred_xgb_mae = (y_test_pred_xgb >= 0.5).astype(int)
+
+# Menghitung MAE pada data training dan testing
+train_mae_xgb = mean_absolute_error(y_train, y_train_pred_xgb_mae)
+test_mae_xgb = mean_absolute_error(y_test, y_test_pred_xgb_mae)
+
+# Menampilkan hasil akurasi dan MAE
+print(f'Training Accuracy (XGBoost): {train_acc:.4f}, Training MAE: {train_mae_xgb:.4f}')
+print(f'Testing Accuracy (XGBoost): {test_acc:.4f}, Testing MAE: {test_mae_xgb:.4f}')

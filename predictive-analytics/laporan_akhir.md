@@ -28,26 +28,20 @@ Proyek ini dilakukan untuk membantu memperkirakan waktu pengiriman produk dapat 
 
 ### Problem Statement
 Berdasarkan pada latar belakang di atas, permasalahan yang dapat diselesaikan pada proyek ini adalah sebagai berikut :
-* "Apakah permintaan pelanggan dijawab?"
-* "Apa penilaian pelanggan? Dan apakah produk dikirim tepat waktu?" dan 
-* "Jika kepentingan produk tinggi, apakah produk dikirim tepat waktu?"
+* Bagaimana mengetahui penilaian pelanggan dan memprediksi apakah produk akan dikirim tepat waktu?
+* Bagaimana memprediksi apakah produk dengan tingkat kepentingan tinggi akan dikirim tepat waktu?
 
 ### Goals
 Tujuan proyek ini dibuat adalah sebagai berikut :
-* Meningkatkan Layanan dan Kepuasan Pelanggan dengan memperkirakan waktu pengiriman produk, sehingga perusahaan dapat memberikan informasi yang lebih akurat kepada pelanggan. 
-* Melakukan analisa dan mengolah data yang optimal untuk memahami pola pembelian, tren pasar, dan preferensi pelanggan.
-* Mengidentifikasi produk dengan tingkat kepentingan tinggi berdasarkan data penjualan dan umpan balik pelanggan.
+* Mengoptimalkan Proses Pengiriman dengan menganalisis dan memprediksi penilaian pelanggan, sekaligus mengidentifikasi apakah produk akan dikirim tepat waktu.
+* Menyempurnakan Manajemen Produk dengan fokus pada produk berkepentingan tinggi, dengan memprediksi apakah produk tersebut akan dikirim tepat waktu.
 
 ### Solution Statement
 Solusi yang dapat dilakukan agar goals terpenuhi adalah sebagai berikut :
-* Melakukan analisa, eksplorasi, pemrosesan pada data dengan memvisualisasikan data agar mendapat gambaran bagaimana data tersebut. Berikut adalah analisa yang dapat dilakukan :
-    * Melakukan check *missing value* pada data
-    * Mencari korelasi pada data untuk mencari *dependant variable* dan *independent variable*
-    * Mengubah data kategorikal ke numerikal
-    * Menghapus fitur yang tidak digunakan
-    * Menormalisasikan data untuk menyamakan skala atau rentang dari fitur-fitur, sehingga tidak ada fitur yang mendominasi yang lainnya dalam proses pembuatan model.
-* Membuat model regresi untuk memprediksi bilangan kontinu untuk memprediksi harga yang akan datang. Berikut algoritma yang digunakan pada proyek ini :
-    * *Boosting Algorithm* (*Gradient Boosting, Adaptive Boosting dan Extreme Gradient Boosting*)
+* Optimasi Proses Pengiriman: Menggunakan model Extreme *Gradient Boosting* (XGBoost) untuk mengidentifikasi dan memprioritaskan pengiriman produk berkepentingan tinggi. Menyesuaikan parameter dan melatih model berdasarkan kepentingan produk dan Metrik Evaluasi: Akurasi dan recall untuk menilai keberhasilan model dalam mengoptimalkan proses pengiriman.
+
+Adapun model regresi yang digunakan pada proyek ini :
+* *Boosting Algorithm* (*Gradient Boosting, Adaptive Boosting dan Extreme Gradient Boosting*)
 
 ## Data Understanding
 ---
@@ -109,7 +103,7 @@ Analisis multivariat adalah analisis data yang berfokus pada beberapa variabel p
 ### Mengetahui analisis data dari visualisasi 
 
 <div>
-<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download.png?raw=true" width="220"/>
+<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download.png?raw=true"width="500"/>
 </div>
 - Biaya sebagian besar produk berada dalam kisaran $240,00–275.00.
 - Berat sebagian besar produk berada dalam kisaran 1.000–2.000 gram dan 4.000–6.000 gram.
@@ -117,7 +111,7 @@ Analisis multivariat adalah analisis data yang berfokus pada beberapa variabel p
 
 ----
 <div>
-<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download%20(1).png?raw=true" width="220"/>
+<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download%20(1).png?raw=true"width="500"/>
 </div>
 - Sebagian besar pesanan ditangani oleh gudang blok F, sementara blok gudang lainnya menangani sisa pesanan secara merata.
 - Sebagian besar pesanan dikirim dengan kapal, diikuti dengan penerbangan, dan akhirnya melalui jalan darat.
@@ -126,7 +120,7 @@ Analisis multivariat adalah analisis data yang berfokus pada beberapa variabel p
 
 ----
 <div>
-<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download%20(2).png?raw=true" width="220"/>
+<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/download%20(2).png?raw=true"width="500"/>
 </div>
 - Banyak dari pelanggan telah melakukan 3 pembelian sebelumnya, hal ini menunjukan bahwa dari data tersebut memiliki sekitar 100 pelanggan setia yang telah melakukan setidaknya 8 pembelian sebelumnya.
 - Sebagian besar pesanan memiliki tingkat kepentingan rendah, diikuti oleh sedang, dan tinggi.
@@ -135,19 +129,31 @@ Dari 10.999 pesanan, lebih dari setengah dari total pesanan tidak terkirim tepat
 ----
 # Data Preparation
 
+Melakukan analisa, eksplorasi, pemrosesan pada data dengan memvisualisasikan data agar mendapat gambaran bagaimana data tersebut. Berikut adalah analisa yang dapat dilakukan :
+  * Melakukan check *missing value* pada data
+  * Mencari korelasi pada data untuk mencari *dependant variable* dan *independent variable*
+  * Mengubah data kategorikal ke numerikal
+  * Menghapus fitur yang tidak digunakan
+  * Menormalisasikan data untuk menyamakan skala atau rentang dari fitur-fitur, sehingga tidak ada fitur yang mendominasi yang lainnya dalam proses pembuatan model.
+
 ### Mengubah data kategorikal menjadi numerikal
 Mengubah variabel kategorikal (*Warehouse_block	Mode_of_Shipment, Customer_care_calls, Customer_rating, Cost_of_the_Product,Prior_purchas, Product_importance, Discount_offered, Gender, Weight_in_gms, Reached.on.Time_Y.N*) yang semula berisi string atau teks telah diubah menjadi representasi numerik. Proses tersebut dilakukan dengan menggunakan *LabelEncoder*. 
 
-<div>
-<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/predictive-analytics/encoder.jpg?raw=true" width="220"/>
-</div>
+| No | Warehouse block | Mode of Shipment | Customer care calls | Customer rating | Cost of the Product | Prior purchases | Product importance | Discount offered | Weight in gms | Reached on, Time YN | |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 3 | 0 | 4 | 2 | 177 | 3 | 1 | 44 | 1233|  1 |
+| 2 | 4 | 0 | 4 |5 | 216 | 2 | 1 | 50 | 3088 | 1 |
 
 *LabelEncoder* adalah langkah yang umum digunakan untuk mengubah variabel kategorikal menjadi representasi numerik.
 
 
 
 ### Menghapus fitur yang tidak diperlukan
-Karena tidak memerlukan fitur *ID* dan *Gender*.
+Karena tidak memerlukan fitur *ID* dan *Gender*. Alasan kenapa fitur *ID* dan *Gender* dihapus yaitu: 
+* *ID* : 
+  ID hanya berfungsi sebagai identifikasi unik untuk setiap baris data dan tidak memiliki informasi prediktif atau makna bisnis yang signifikan.
+* *Gender* : 
+  Gender tidak relevan terhadap variabel target yang diinginkan, maka menghapusnya dapat meningkatkan efisiensi dan interpretabilitas model.
 
 ### Data Normalization
 Normalisasi data digunakan agar model dapat bekerja lebih optimal karena model tidak perlu mengolah data dengan angka besar. Normalisasi biasanya mentransformasi data dalam skala tertentu.
@@ -215,37 +221,32 @@ Berikut parameter yang digunakan dalam model *Adaptive Boosting*:
 
 ----
 # Evaluation
-Metrik evaluasi yang digunakan pada proyek ini adalah metrik *classification report*. metrik-metrik tersebut melibatkan presisi, recall, F1-score, dan dukungan (*support*).
+#### *Classification report*
+Metrik evaluasi yang digunakan pada proyek ini adalah akurasi dan *mean squared error* (MSE). Akurasi menentukan tingkat kemiripan antara hasil prediksi dengan nilai yang sebenarnya (y_test). 
+* *Mean squared error* (MSE) mengukur error dalam model statistik dengan cara menghitung rata-rata error dari kuadrat hasil aktual dikurang hasil prediksi. Berikut formulan MSE :
+<div><img src="https://user-images.githubusercontent.com/107544829/188412654-f5dc0ae1-901b-470e-aae5-1f6b5fb68b4d.png"width="300"/></div>
+
 * Akurasi (*Accuracy*):
   Akurasi mengukur sejauh mana model dapat mengidentifikasi dengan benar kelas-kelas pada dataset pengujian.
   Formula: (Jumlah prediksi benar) / (Jumlah total prediksi)
-* Presisi (*Precision*):
-  Presisi mengukur sejauh mana kelas yang diprediksi sebagai positif sebenarnya positif.
-  Formula: TP / (TP + FP) 
-  dimana : (TP: True Positive, FP: False Positive)
-* Recall (Sensitivitas atau True Positive Rate):
-  Recall mengukur sejauh mana kelas positif dapat diidentifikasi oleh model.
-  Formula: TP / (TP + FN) (FN: False Negative)
-* F1-Score:
-  F1-score merupakan rata-rata harmonik antara presisi dan recall, memberikan gambaran keseluruhan kinerja model.
-  Formula: 2 * (Presisi * Recall) / (Presisi + Recall)
-* Dukungan (*Support*):
-  Dukungan adalah jumlah sampel yang sesungguhnya termasuk dalam kelas yang diukur.
 
-<div><img src="https://miro.medium.com/v2/resize:fit:1304/1*H3O5-qzZrcxFTYCnbXB-9A.png" width="500"/></div>
 
 Berikut hasil evaluasi pada proyek ini :
 
 #### Tingkat Akurasi
 
-  | model    | accuracy |
-  |----------|----------|
-  | *Gradient Boosting*  | 69.2% |
-  | *Adaptive Boosting* | 64.7% |
-  | *Extreme Gradient Boosting* | 69.1% |
+  | model    | accuracy | MAE |
+  |----------|----------|----------|
+  | *Gradient Boosting*  | 69.2% |0.30|
+  | *Adaptive Boosting* | 64.7% | 0.35 |
+  | *Extreme Gradient Boosting* | 69.1% | 0.31|
 
 
-Dari hasil evaluasi dapat dilihat bahwa model dengan algoritma *Gradient Boostin*g memiliki akurasi lebih tinggi tinggi dibandingkan algoritma lainnya dalam proyek ini.
+Dari hasil evaluasi, dapat dilihat bahwa model dengan algoritma *Gradient Boosting* menunjukkan performa lebih baik dengan akurasi 69.2% dan MAE sebesar 0.30, dibandingkan dengan model *Adaptive Boosting* dan* Extreme Gradient Boosting*.
+
+Berdasarkan hasil tersebut maka dapat disimpulkan model dapat memberikan estimasi waktu pengiriman yang akurat hal ini dikarenakan semakin rendah nilai MAE, semakin mendekati prediksi waktu pengiriman dengan nilai aktualnya, yang sesuai dengan tujuan meningkatkan layanan pelanggan.
+
+Sehingga, pemilihan model Gradient Boosting dengan akurasi yang tinggi dan MAE yang rendah menunjukkan bahwa model tersebut dapat memberikan estimasi waktu pengiriman yang lebih akurat, sesuai dengan tujuan utama proyek. 
 
 ---
 # Referensi (IEEE)  :
