@@ -213,10 +213,40 @@ Adapun jumlah dari setiap kategori dapat dilihat pada gambar dibawah:
 * Ada banyak pengguna yang hanya memberikan rating satu kali, meskipun mereka telah memberi rating 5 anime, hal tersebut tidak dapat dianggap sebagai catatan berharga untuk rekomendasi.
 
 Jadi, akan mempertimbangkan minimum 50 peringkat oleh pengguna sebagai nilai ambang batas. Dengan membuat tabel pivot yang terdiri dari baris sebagai judul dan kolom sebagai user id, ini akan membantu membuat matriks renggang yang bisa sangat membantu dalam mencari kesamaan cosinus.
+> * Sebelum Cleaning 
+
+<div>
+<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/recommendation-system/assets/before-cleaning.jpg?raw=true"width="1000"/>
+</div>
+
+> * Sesudah Cleaning
+
+<div>
+<img src="https://github.com/shopie14/dicoding-ml-terapan/blob/main/recommendation-system/assets/after-cleaning.jpg?raw=truee"width="1000"/>
+</div>
 
 
-# Modeling
+# Modeling and Evaluation
+### Collaborative Recommender
+> Pemfilteran kolaboratif adalah teknik yang dapat menyaring item yang mungkin disukai pengguna berdasarkan reaksi dari pengguna serupa. Ia bekerja dengan mencari sekelompok besar orang dan menemukan sekelompok kecil pengguna dengan selera yang mirip dengan pengguna tertentu. 
 
+> Dalam proyek akan menggunakan kesamaan Cosine yang merupakan metrik yang digunakan untuk mengukur seberapa mirip suatu dokumen terlepas dari ukurannya. Secara matematis, ini mengukur kosinus sudut antara dua vektor yang diproyeksikan dalam ruang multidimensi. 
+
+> Kesamaan kosinus menguntungkan karena meskipun dua dokumen serupa berjauhan berdasarkan jarak Euclidean (karena ukuran dokumen), kemungkinan keduanya masih diorientasikan lebih berdekatan. Semakin kecil sudutnya, semakin tinggi kesamaan kosinusnya. 
+
+* Penggunaan model algoritma NearestNeighbors untuk menemukan tetangga terdekat berdasarkan kemiripan dengan nilai n_neighbors = 6.
+* Mengubah data pivot menjadi Compressed Sparse Row (CSR) matrix, representasi matriks efisien untuk data yang jarang (sparse).
+* Menggunakan cosine similarity, mengukur kemiripan berdasarkan sudut antara vektor representasi anime dimana nilai cosine similarity berkisar antara -1 (sangat tidak mirip) hingga 1 (sangat mirip).
+* Menentukan algoritma yang digunakan untuk mencari tetangga terdekat yaitu "*brute*" melakukan perhitungan jarak secara langsung ke semua anime dalam dataset.
+
+
+
+### Content Based Recommender
+> Pemfilteran berbasis konten merekomendasikan item berdasarkan perbandingan antara konten item dan profil pengguna. Isi setiap item direpresentasikan sebagai sekumpulan deskriptor atau istilah, biasanya kata-kata yang muncul dalam dokumen. 
+
+> Pemberi rekomendasi berbasis konten bekerja dengan data yang disediakan pengguna, baik secara eksplisit (memberi peringkat) atau secara implisit (mengklik tautan). 
+
+> Berdasarkan data tersebut, profil pengguna dibuat yang kemudian digunakan untuk memberikan saran kepada pengguna. Saat pengguna memberikan lebih banyak masukan atau mengambil tindakan berdasarkan rekomendasi, mesin menjadi semakin akurat.
 
 # Referensi (IEEE)  :
 
